@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Ng Staticize Demo</title>
+  <!-- build:js lib.js -->
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="../node_modules/angular/angular.js"></script>
+  <script src="../dist/ng-staticize.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:css index.css -->
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css" />
+  <!-- endbuild -->
+  <style>
+    body {
+      padding: 0 20px;
+    }
+
+    legend a {
+      margin-right: 20px;
+      vertical-align: middle;
+    }
+
+    .male {
+      color: #55468C;
+    }
+
+    .female {
+      color: #C4969E;
+    }
+
+    .title {
+      padding: 10px 5px;
+      color: red;
+    }
+
+    tr {
+      text-align: left;
+    }
+
+    tr th {
+      width: 20%;
+    }
+
+    tr td span {
+      padding: 2px 10px;
+    }
+
+    img {
+      width: 30px;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    .load-buttons {
+      padding: 10px 0;
+    }
+
+    .load-buttons .render-time {
+      color: #990000;
+      float: right;
+    }
+
+    .tab-pane .alert {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- In this demo, some code is from http://plnkr.co/edit/0DGOrk?p=preview -->
+
+<script>
+  var helpers = {
+    randomGender: function() {
+      return (Math.floor(Math.random() * 2) % 2 === 0) ? 'M' : 'F';
+    },
+
+    randomAge: function() {
+      return Math.floor(Math.random() * 90) + 1;
+    },
+
+    randomName: function(length) {
+      var nome = "";
+      for (var i = 0; i < length; i++)
+        nome += constant.letters.charAt(Math.floor(Math.random() * constant.letters.length));
+      return nome;
+    },
+
+    randomUrl: function() {
+      return (Math.floor(Math.random() * 2) % 2 === 0) ? 'http://www.' + (helpers.randomName(20) + '.' + helpers.randomName(2)).toLowerCase() : '';
+    }
+  };
+
+  var constant = {
+    letters : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+
+    ageColors: {
+      average: {},
+      minor: {
+        'background-color': 'red',
+        color: 'white'
+      },
+      senior: {
+        'background-color': 'brown',
+        color: 'yellow'
+      }
+    }
+  };
+
+  angular.module('demo', [ 'ngStaticize' ])
+    .controller('DefaultController', function ($scope) {
+      $scope.persons = [];
+
+      $scope.ageColor = function(age) {
+        var color = (age < 18) ? 'minor' : ((age > 60) ? 'senior' : 'average');
+        return constant.ageColors[color];
+      };
+
+      $scope.loadPersons = function(number) {
+        $scope.persons = [];
+        var gender = '?';
+        for (var i = 0; i < number; i++) {
+          gender = helpers.randomGender();
+          $scope.persons.push({
+            firstname: helpers.randomName(8),
+            lastname: helpers.randomName(8),
+            age: helpers.randomAge(),
+            gender: gender,
+            url: helpers.randomUrl()
+          });
+        }
+        var start = new Date();
+        setTimeout(function() {
+          $scope.renderTime = (new Date() - start);
+          $scope.$apply();
+        });
+      };
+    }).controller('StatcizeController', function ($scope) {
+      $scope.persons = [];
+
+      $scope.ageColor = function(age) {
+        var color = (age < 18) ? 'minor' : ((age > 60) ? 'senior' : 'average');
+        return constant.ageColors[color];
+      };
+
+      $scope.loadPersons = function(number) {
+        $scope.persons = [];
+        var gender = '?';
+        for (var i = 0; i < number; i++) {
+          gender = helpers.randomGender();
+          $scope.persons.push({
+            firstname: helpers.randomName(8),
+            lastname: helpers.randomName(8),
+            age: helpers.randomAge(),
+            gender: gender,
+            url: helpers.randomUrl()
+          });
+        }
+        var start = new Date();
+        setTimeout(function() {
+          $scope.renderTime = (new Date() - start);
+          $scope.$apply();
+        });
+      };
+    });
+</script>
+
+<div class="container">
+
+  <h2>ng-staticize demo</h2>
+  <div class="demo-desc">
+    <p>This demo demonstrates the render speed of ng-staticize. Switch tabs to view the render speed of using ng-staticize or not.</p>
+    <p>If you are using Chrome, you can use <a target="_blank" href="https://chrome.google.com/webstore/detail/angular-watchers/nlmjblobloedpmkmmckeehnbfalnjnjk">Angular watchers</a> to view the watcher's change. </p>
+  </div>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Use ng-staticize</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Angular Default</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+
+      <div ng-controller="StatcizeController">
+        <div class="load-buttons">
+          <button class="btn btn-default" ng-click="loadPersons(500)">Load 500</button>
+          <button class="btn btn-default" class="btn btn-default" ng-click="loadPersons(1000)">Load 1000</button>
+          <button class="btn btn-default" class="btn btn-default" ng-click="loadPersons(2000)">Load 2000</button>
+          <button class="btn btn-default" class="btn btn-default" ng-click="loadPersons(5000)">Load 5000</button>
+          <button class="btn btn-default" class="btn btn-default" ng-click="loadPersons(10000)">Load 10000</button>
+        </div>
+
+        <div class="alert alert-warning" role="alert">
+          This tab is using ng-staticize, your can click buttons above to get the time of rendering. <br />
+          <div class="alert-success render-time" role="alert" ng-bind="renderTime ? 'renderTime: ' + renderTime + 'ms' : ''" ng-if="renderTime">...</div>
+        </div>
+        <div ng-staticize="persons">
+          <table class="table table-bordered">
+            <tbody>
+            <tr>
+              <th>#</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Profile</th>
+            </tr>
+            <tr ng-repeat="person in persons" ng-class="{'male':person.gender=='M','female':person.gender=='F'}">
+              <td ng-bind="$index + 1"></td>
+              <td ng-bind="person.firstname"></td>
+              <td ng-bind="person.lastname"></td>
+              <td><span ng-bind="person.age" ng-style="ageColor(person.age)" style=""></span></td>
+              <td ng-bind="person.gender"></td>
+              <td>
+                <a ng-href="person.url">
+                  <span ng-bind="(person.url) ? 'link' : 'missing'" ng-class="{'label label-important':!person.url}"></span>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="profile">
+      <div ng-controller="DefaultController">
+        <div class="load-buttons">
+          <button class="btn btn-default" ng-click="loadPersons(500)">Load 500</button>
+          <button class="btn btn-default" ng-click="loadPersons(1000)">Load 1000</button>
+          <button class="btn btn-default" ng-click="loadPersons(2000)">Load 2000</button>
+          <button class="btn btn-default" ng-click="loadPersons(5000)">Load 5000</button>
+          <button class="btn btn-default" ng-click="loadPersons(10000)">Load 10000</button>
+        </div>
+
+        <div class="alert alert-warning" role="alert">
+          This tab is <strong>not</strong> using ng-staticze, your can click buttons above to get the time of rendering. <br />
+          <div class="alert-success render-time" role="alert" ng-bind="renderTime ? 'renderTime: ' + renderTime + 'ms' : ''" ng-if="renderTime">...</div>
+        </div>
+
+        <table class="table table-bordered" >
+          <tbody>
+          <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Profile</th>
+          </tr>
+          <tr ng-repeat="person in persons" ng-class="{'male':person.gender=='M','female':person.gender=='F'}">
+            <td ng-bind="$index + 1"></td>
+            <td ng-bind="person.firstname"></td>
+            <td ng-bind="person.lastname"></td>
+            <td><span ng-bind="person.age" ng-style="ageColor(person.age)" style=""></span></td>
+            <td ng-bind="person.gender"></td>
+            <td>
+              <a ng-href="person.url">
+                <span ng-bind="(person.url)?'link':'missing'" ng-class="{'label label-important':!person.url}"></span>
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

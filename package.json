@@ -1,0 +1,27 @@
+{
+  "name": "ng-staticize",
+  "version": "0.1.0",
+  "description": "Staticize your angular template. Zero watcher and fast as template engine.",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node_modules/.bin/webpack --watch --devtool inline-source-map",
+    "dist": "COMPRESS=1 node_modules/.bin/webpack"
+  },
+  "dependencies": {
+    "domify": "^1.4.0"
+  },
+  "devDependencies": {
+    "angular": "1.2.28",
+    "bootstrap": "^3.3.5",
+    "eslint": "^1.5.1",
+    "eslint-loader": "^1.0.0",
+    "jquery": "1.11.3",
+    "mocha": "~2.2.5",
+    "should": "~7.0.2",
+    "sinon": "~1.10.2",
+    "usemin-lib": "0.0.5",
+    "webpack": "^1.9.10"
+  },
+  "author": "long.zhang",
+  "license": "MIT"
+}
