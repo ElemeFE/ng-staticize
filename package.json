@@ -7,6 +7,10 @@
     "dev": "node_modules/.bin/webpack --watch --devtool inline-source-map",
     "dist": "COMPRESS=1 node_modules/.bin/webpack"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElemeFE/ng-staticize.git"
+  },
   "dependencies": {
     "domify": "^1.4.0"
   },
