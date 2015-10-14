@@ -1,6 +1,6 @@
 # Introduce
 
-ng-staticize 是一个把 Angular 模板静态化的 directive，适用在一些性能敏感的场景。在 Angular 模板静态化之后，Angular 的 watcher 数量会显著降低，渲染速度(在数据量较大的情况下)在 IE8 上会有10-20x的性能提升。
+ng-staticize 是一个把 Angular 模板静态化的 directive，使用之后 watcher 数量会显著降低，渲染速度(在数据量较大的情况下)在 IE8 上会有10-20x的性能提升。
 
 你可以花几分钟查看 [这个例子](http://elemefe.github.io/ng-staticize/) 来体验一下 ng-staticize 带来的性能提升，在 IE8 或者 Firefox 下会看到更明显的性能提升。
 
